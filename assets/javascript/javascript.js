@@ -32,11 +32,11 @@ $(document).ready(function () {
 
     //define dropdown rating input. 
     let dropdownRating = $('#starRatingInput').val()
-    
+
     //get the trail data from the reviewForm attribute through the hike api and .data
     const trailId = $(this).attr('data-trailId');
 
-    //add trails so that ID and user review will be children of trails put info in to firebase
+    //uploads trails so that ID and user review will be children of trails put info in to firebase
     database.ref('trails/' + trailId).push({
       // key value pairs on firebase object
       userReview: userReview,
@@ -343,20 +343,19 @@ $(document).ready(function () {
   </div>
     `);
 
-  //show modal
-  myModal.modal('show');
+    //show modal
+    myModal.modal('show');
 
-  //had to move firebase loader inside div click because of modal, when open new modal want to listen for reviews for that trail
-  // Firebase watcher + initial loader 
-  database.ref('trails/' + currentTrail.id).on("child_added", function (snapshot) {
-    // retrieve info that was put in to firebase, everytime a review is added generate new div
-    const reviewDiv = `
+    //had to move firebase inside div click because of modal, when open new modal want to listen for reviews for that trail
+    database.ref('trails/' + currentTrail.id).on("child_added", function (snapshot) {
+      // retrieve info that was put in to firebase, everytime a review is added generate new div
+      const reviewDiv = `
     <div>${snapshot.val().userReview}</div>
     `;
-    console.log("review div: " + reviewDiv);
+      console.log("review div: " + reviewDiv);
 
-    //Create variables to display star ratings 
-    const starRatingOne = `
+      //Create variables to display star ratings 
+      const starRatingOne = `
       <i class="fa fa-star fa-lg filledStar" data-rating="1" aria-hidden="true"></i>
       <i class="fa fa-star fa-lg" data-rating="2" aria-hidden="true"></i>
       <i class="fa fa-star fa-lg" data-rating="3" aria-hidden="true"></i>
@@ -364,7 +363,7 @@ $(document).ready(function () {
       <i class="fa fa-star fa-lg" data-rating="5" aria-hidden="true"></i>
     `;
 
-    const starRatingTwo = `
+      const starRatingTwo = `
     <div>
       <i class="fa fa-star fa-lg filledStar" data-rating="1" aria-hidden="true"></i>
       <i class="fa fa-star fa-lg filledStar" data-rating="2" aria-hidden="true"></i>
@@ -374,7 +373,7 @@ $(document).ready(function () {
     </div>
     `;
 
-    const starRatingThree = `
+      const starRatingThree = `
     <div>
       <i class="fa fa-star fa-lg filledStar" data-rating="1" aria-hidden="true"></i>
       <i class="fa fa-star fa-lg filledStar" data-rating="2" aria-hidden="true"></i>
@@ -384,7 +383,7 @@ $(document).ready(function () {
     </div>
     `;
 
-    const starRatingFour = `
+      const starRatingFour = `
     <div>
       <i class="fa fa-star fa-lg filledStar" data-rating="1" aria-hidden="true"></i>
       <i class="fa fa-star fa-lg filledStar" data-rating="2" aria-hidden="true"></i>
@@ -394,7 +393,7 @@ $(document).ready(function () {
     </div>
     `;
 
-    const starRatingFive = `
+      const starRatingFive = `
     <div>
       <i class="fa fa-star fa-lg filledStar" data-rating="1" aria-hidden="true"></i>
       <i class="fa fa-star fa-lg filledStar" data-rating="2" aria-hidden="true"></i>
@@ -404,27 +403,27 @@ $(document).ready(function () {
     </div>
     `;
 
-    //If, Else If statement to append stars based on dropdownRating value
-    if (snapshot.val().dropdownRating == 1) {
-      $("#savedReview").append(starRatingOne);
+      //If, Else If statement to append stars based on dropdownRating value
+      if (snapshot.val().dropdownRating == 1) {
+        $("#savedReview").append(starRatingOne);
 
-    } else if (snapshot.val().dropdownRating == 2) {
-      $("#savedReview").append(starRatingTwo);
+      } else if (snapshot.val().dropdownRating == 2) {
+        $("#savedReview").append(starRatingTwo);
 
-    } else if (snapshot.val().dropdownRating == 3) {
-      $("#savedReview").append(starRatingThree);
+      } else if (snapshot.val().dropdownRating == 3) {
+        $("#savedReview").append(starRatingThree);
 
-    } else if (snapshot.val().dropdownRating == 4) {
-      $("#savedReview").append(starRatingFour);
+      } else if (snapshot.val().dropdownRating == 4) {
+        $("#savedReview").append(starRatingFour);
 
-    } else if (snapshot.val().dropdownRating == 5) {
-      $("#savedReview").append(starRatingFive);
-    }
+      } else if (snapshot.val().dropdownRating == 5) {
+        $("#savedReview").append(starRatingFive);
+      }
 
-    //Change the HTML to reflect
-    $("#savedReview").append(reviewDiv);
+      //Change the HTML to reflect
+      $("#savedReview").append(reviewDiv);
 
-    // Handle the errors
+      // Handle the errors
     }, function (errorObject) {
       console.log("Errors handled: " + errorObject.code);
     });
